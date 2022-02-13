@@ -71,14 +71,13 @@ function update() {
 }
 
 
-function populate(array) {
+function populate(array, sabaq) {
     removeElementsByClass('content-div')
     let contentDiv = document.createElement('div');
     contentDiv.className = 'content-div';
     ayah.append(contentDiv);
-
-    sabaqNumber.textContent = `سبق ${Number(sabaqMax) % 3 == 0? 3 : sabaqMax % 3 }`;
-    sabaqMax++;
+    sabaqNumber.textContent = `سبق ${sabaq}`;
+    // sabaqMax++;
 
     newArray = array.toString().replace(/[\[\]']|:|,,+/g, '').split(' ');
 
@@ -101,7 +100,7 @@ function populate(array) {
                 currentActive++
                 update()
                 if (currentActive - 1 == newArray.length) {
-                    populate(inputs[count % inputs.length])
+                    populate(inputs[count % inputs.length], (count % inputs.length) + 1)
                 }
             }
             if (event.keyCode === 39) {
@@ -115,8 +114,10 @@ function populate(array) {
 submitBtn.addEventListener('click', () => {
     closePopandOverlay();
     let i = 1
-    while (document.querySelector(`#value-${i}`)) {
+    while (document.querySelector(`#value-${i}`).value) {
         inputs.push([document.querySelector(`#value-${i++}`).value])
+        if(i==5)
+            break;
     }
-    populate(inputs[count]);
+    populate(inputs[count],1);
 })
